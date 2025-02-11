@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "gestion-de-stock-avec-bar-code",
-    "slug": "gestion-de-stock-avec-bar-code",
+    "slug": "warehouse-managemnt-using-barcode",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -32,6 +32,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "b8b67527-3967-4b7e-a3d9-6b42de523463"
+      }
+    },
+    "owner": "bougarneomar"
   }
 }
