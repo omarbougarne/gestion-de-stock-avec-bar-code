@@ -8,7 +8,7 @@ export const getUserSession = async () => {
     const user = await AsyncStorage.getItem('user');
     return user ? JSON.parse(user) : null
 }
-
+//testing pr feat
 export const clearUserSession = async (user: any) => {
     await AsyncStorage.removeItem('user');
 } 
