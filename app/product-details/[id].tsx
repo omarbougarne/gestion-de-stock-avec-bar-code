@@ -22,28 +22,42 @@ export default function ProductDetails() {
   const [product, setProduct] = useState<Product | null>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true)
-  useEffect(() =>{
-    const fetchProduct = async () =>{
-      try{
-      const response = await fetch(`http://192.168.9.33:3000/products/${id}`)
-      if(!response.ok){
-        console.log(`Http error ${response.status}`)
+ useEffect(() => {
+  const fetchProduct = async () => {
+    try {
+      console.log('Starting fetch for product id:', id);
+      const response = await fetch(`http://192.168.9.33:3000/products/${id}`);
+      console.log('Response received:', response);
+      if (!response.ok) {
+        console.error('Response not OK, status:', response.status);
+        throw new Error('Failed to fetch product');
       }
-
       const data = await response.json();
+      console.log('Product data received:', data);
       setProduct(data);
+    } catch (err) {
+      console.error('Fetch error:', err);
+      setError('Failed to fetch product details');
+    } finally {
+      console.log('Setting loading to false');
+      setLoading(false);
     }
-  catch(err){
-    console.log(err);
-    setError('Failed fetching product')
-  }finally{
-    setLoading(false)
+  };
+
+  if (id) {
+    fetchProduct();
+  } else {
+    setError('No product ID provided');
+    setLoading(false);
   }
-  if(id){
-  fetchProduct();
-  }
-}
-  }, [])
+}, [id]);
+
+
+  useEffect(() => {
+  console.log('Product ID from URL:', id);
+  // ...
+}, [id]);
+
   if(loading){
     return(
       <View style={styles.container}>
