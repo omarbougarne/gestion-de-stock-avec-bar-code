@@ -2,6 +2,8 @@ import { Link } from 'expo-router';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, FlatList, Image, ActivityIndicator, Pressable } from 'react-native';
 import type { RelativePathString } from 'expo-router';
+import SearchBar from '../_components/SearchBar'; 
+
 interface Product {
   id: number;
   name: string;
@@ -14,67 +16,60 @@ interface Product {
   stocks: any[];
   editedBy: any[];
 }
+
 export default function ProductsList() {
-  
-  const appUrl = process.env.EXPO_PUBLIC_APP_URL
+  const appUrl = process.env.EXPO_PUBLIC_APP_URL;
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch(`${appUrl}/products`);
-      if (!response.ok) {
-        throw new Error(`HTTP Error ${response.status}`);
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(`${appUrl}/products`);
+        if (!response.ok) {
+          throw new Error(`HTTP Error ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('Fetched Data:', data);
+        setProducts(data);
+      } catch (err) {
+        console.error('Fetch error:', err);
+        setError('Failed to fetch products');
+      } finally {
+        setLoading(false);
       }
-      const data = await response.json();
-      console.log('Fetched Data:', data); 
+    };
 
-      
-        setProducts(data); 
-      
-    } catch (err) {
-      console.error('Fetch error:', err);
-      setError('Failed to fetch products');
-    } finally {
-      setLoading(false);
-    }
-  };
+    fetchProducts();
+  }, [appUrl]);
 
-  fetchProducts();
-}, []);
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-
-  useEffect(() => {
-  console.log('Updated products state:', products);
-}, [products]);
-
-
-
-  if(loading){
-    return(
-      <View>
-        <ActivityIndicator size="large" color="#000"/>
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#000" />
       </View>
-    )
+    );
   }
 
-  if(error){
-    return(
-      <View>
+  if (error) {
+    return (
+      <View style={styles.container}>
         <Text style={styles.errorText}>{error}</Text>
       </View>
-    )
+    );
   }
 
-  const renderItem = ({item}: {item: Product}) => (
-<Link
-  href={(`/product-details/${item.id.toString()}` as unknown) as RelativePathString}
-  asChild
->
-
-
+  const renderItem = ({ item }: { item: Product }) => (
+    <Link
+      href={(`/product-details/${item.id.toString()}` as unknown) as RelativePathString}
+      asChild
+    >
       <Pressable>
         <View style={styles.productContainer}>
           <Image source={{ uri: item.image }} style={styles.productImage} />
@@ -84,20 +79,21 @@ export default function ProductsList() {
         </View>
       </Pressable>
     </Link>
+  );
 
-  )
   return (
-    <View>
+    <View style={styles.container}>
+      <SearchBar query={searchQuery} onChangeQuery={setSearchQuery} placeholder="Search products..." />
       <FlatList 
-        data={products}
+        data={filteredProducts}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         contentContainerStyle={styles.listContainer}
-        
       />
     </View>
-  )
+  );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
