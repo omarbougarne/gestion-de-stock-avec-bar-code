@@ -66,6 +66,9 @@ const handleIncreaseStock = () => {
     if (product.stocks.length === 0) return; 
     setProduct({ ...product, stocks: product.stocks.slice(0, product.stocks.length - 1) });
   };
+  const totalStockQuantity = product
+    ? product.stocks.reduce((acc: number, stock: any) => acc + (stock.quantity || 0), 0)
+    : 0;
   if(loading){
     return(
       <View style={styles.container}>
@@ -89,7 +92,9 @@ const handleIncreaseStock = () => {
       <Text style={styles.productType}>Type: {product?.type}</Text>
       <Text style={styles.productPrice}>Price: ${product?.price}</Text>
       <Text style={styles.productSupplier}>Supplier: {product?.supplier}</Text>
-      <Text style={styles.productStock}>Stock: {product?.stocks.length}</Text>
+      <Text style={styles.productStock}>
+        Total Stock Quantity: {totalStockQuantity}
+      </Text>
       <View style={styles.buttonRow}>
             <Button title="Increase Stock" onPress={handleIncreaseStock} />
             <Button title="Decrease Stock" onPress={handleDecreaseStock} />
