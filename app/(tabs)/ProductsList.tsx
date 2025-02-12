@@ -1,5 +1,8 @@
+import { Link } from 'expo-router';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, FlatList, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, FlatList, Image, ActivityIndicator, Pressable } from 'react-native';
+import type { RelativePathString } from 'expo-router';
+
 interface Product {
   id: number;
   name: string;
@@ -66,12 +69,21 @@ export default function ProductsList() {
   }
 
   const renderItem = ({item}: {item: Product}) => (
-<View style={styles.productContainer}>
-      <Image source={{ uri: item.image }} style={styles.productImage} />
-      <Text style={styles.productName}>{item.name}</Text>
-      <Text style={styles.productType}>{item.type}</Text>
-      <Text style={styles.productPrice}>${item.price}</Text>
-    </View>
+<Link
+  href={(`/product-details/${item.id.toString()}` as unknown) as RelativePathString}
+  asChild
+>
+
+
+      <Pressable>
+        <View style={styles.productContainer}>
+          <Image source={{ uri: item.image }} style={styles.productImage} />
+          <Text style={styles.productName}>{item.name}</Text>
+          <Text style={styles.productType}>{item.type}</Text>
+          <Text style={styles.productPrice}>${item.price}</Text>
+        </View>
+      </Pressable>
+    </Link>
 
   )
   return (
