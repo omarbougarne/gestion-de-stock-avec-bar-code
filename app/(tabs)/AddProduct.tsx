@@ -11,13 +11,14 @@ export default function AddProduct() {
   const [price, setPrice] = useState('');
   const [solde, setSolde] = useState('');
   const [supplier, setSupplier] = useState('');
+  const [stock, setStock] = useState('');
   // const [image, setImage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const handleAddProduct = async () =>{
-  if(!name || !type || !price || !solde || !supplier ){
+  if(!name || !type || !price || !solde || !supplier || !stock ){
     setError('Please fill in all fields.');
       return;
   }
@@ -36,6 +37,7 @@ export default function AddProduct() {
         price,
         solde,
         supplier,
+        stock
         // image
       })
     });
@@ -93,6 +95,12 @@ export default function AddProduct() {
         placeholder="Supplier"
         value={supplier}
         onChangeText={setSupplier}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Stock"
+        value={supplier}
+        onChangeText={setStock}
       />
       {/* <TextInput
         style={styles.input}

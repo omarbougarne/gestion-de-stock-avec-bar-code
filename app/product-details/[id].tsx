@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Image } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, Image, Button } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
 
@@ -51,14 +51,21 @@ export default function ProductDetails() {
     setError('No product ID provided');
     setLoading(false);
   }
-}, [id]);
+}, [id, appUrl]);
 
 
-  useEffect(() => {
-  console.log('Product ID from URL:', id);
-  // ...
-}, [id]);
+  
+const handleIncreaseStock = () => {
+    if (!product) return;
+    const newStock = { id: Date.now(), quantity: 1 };
+    setProduct({ ...product, stocks: [...product.stocks, newStock] });
+  };
 
+  const handleDecreaseStock = () => {
+    if (!product) return;
+    if (product.stocks.length === 0) return; 
+    setProduct({ ...product, stocks: product.stocks.slice(0, product.stocks.length - 1) });
+  };
   if(loading){
     return(
       <View style={styles.container}>
@@ -83,6 +90,10 @@ export default function ProductDetails() {
       <Text style={styles.productPrice}>Price: ${product?.price}</Text>
       <Text style={styles.productSupplier}>Supplier: {product?.supplier}</Text>
       <Text style={styles.productStock}>Stock: {product?.stocks.length}</Text>
+      <View style={styles.buttonRow}>
+            <Button title="Increase Stock" onPress={handleIncreaseStock} />
+            <Button title="Decrease Stock" onPress={handleDecreaseStock} />
+          </View>
     </View>
   )
 }
@@ -122,6 +133,10 @@ const styles = StyleSheet.create({
   productStock: {
     fontSize: 16,
     color: '#777',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   errorText: {
     color: 'red',
