@@ -1,8 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const saveUserSession = async (user: any) => {
-    await AsyncStorage.setItem('user', JSON.stringify(user))
-}
+    try {
+        await AsyncStorage.setItem('user', JSON.stringify(user));
+        console.log('User session saved:', user);
+    } catch (err) {
+        console.error('Failed to save user session:', err);
+    }
+};
 
 export const getUserSession = async () => {
     const user = await AsyncStorage.getItem('user');

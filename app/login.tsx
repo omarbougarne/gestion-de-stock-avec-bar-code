@@ -4,53 +4,68 @@ import { router } from 'expo-router';
 import { saveUserSession } from '../utils/storage';
 
 
-export default function login() {
+interface Warehouseman {
+  id: string; 
+  name: string;
+  dob: string;
+  city: string;
+  secretKey: string;
+  warehouseId: number;
+}
 
+export default function Login() {
   const [userId, setUserId] = useState('');
-  const [secretKey, setSecretKey] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = async () =>{
-    try{
-    const response = await fetch('http:/192.168.8.201:3000/warehousemans');
-    const users = await response.json();
-
-    const user = users.find(
-        (u: { id: number; secretKey: string; }) => u.id === Number(userId) && u.secretKey === secretKey
-      );
-      if(user){
-        await saveUserSession(user);
-        router.replace('/(tabs)/products');
-      }else{
-        setError("Invalid ID or secret key")
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('http://192.168.9.33:3000/warehousemans');
+      if (!response.ok) {
+        throw new Error(`HTTP error ${response.status}`);
       }
-    }catch(err){
+      
+      
+      const users = (await response.json()) as Warehouseman[];
+      console.log('Fetched users:', users);
+
+      
+      users.forEach((u) => console.log(`User id: ${u.id}, type: ${typeof u.id}`));
+
+      
+      const searchId = Number(userId.trim());
+      console.log('Looking for user with ID:', searchId);
+
+      
+      const user = users.find((u: Warehouseman) => Number(u.id) === searchId);
+
+      if (user) {
+        console.log('User found, navigating to tabs...');
+        await saveUserSession(user);
+        router.replace('/(tabs)');
+      } else {
+        console.log('No matching user found for ID:', userId);
+        setError('Invalid ID');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
       setError('Login failed. Check your connection.');
     }
-
-  }
+  };
 
   return (
-    <View>
-      <TextInput 
-      placeholder="User's ID"
-      value={userId}
-      onChangeText={setUserId}
-      
+    <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        placeholder="User's ID"
+        value={userId}
+        onChangeText={setUserId}
       />
-      <TextInput 
-      placeholder="User's Secret"
-      value={secretKey}
-      onChangeText={setSecretKey}
-      
-      />
-    
-    {error && <Text>{error}</Text>}
-    <View>
-      <button></button>
+      {error && <Text style={styles.errorText}>{error}</Text>}
+      <View style={styles.buttonContainer}>
+        <Button title="login" onPress={handleLogin} />
+      </View>
     </View>
-    </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -59,7 +74,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center', 
     padding: 20,
-    backgroundColor: '#f0f0f0', 
+    backgroundColor: '#f0f0f0',
   },
   input: {
     width: '100%',
