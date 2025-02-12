@@ -66,6 +66,8 @@ const handleIncreaseStock = () => {
     if (product.stocks.length === 0) return; 
     setProduct({ ...product, stocks: product.stocks.slice(0, product.stocks.length - 1) });
   };
+
+  
   if(loading){
     return(
       <View style={styles.container}>
