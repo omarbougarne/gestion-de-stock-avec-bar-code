@@ -24,18 +24,18 @@ export default function Login() {
         throw new Error(`HTTP error ${response.status}`);
       }
       
-      
+      //fetch users as houseman
       const users = (await response.json()) as Warehouseman[];
       console.log('Fetched users:', users);
 
-      
+      //to check for id type it's a string
       users.forEach((u) => console.log(`User id: ${u.id}, type: ${typeof u.id}`));
 
-      
+      //consoling the users id
       const searchId = Number(userId.trim());
       console.log('Looking for user with ID:', searchId);
 
-      
+      //finding the user with specified id
       const user = users.find((u: Warehouseman) => Number(u.id) === searchId);
 
       if (user) {
