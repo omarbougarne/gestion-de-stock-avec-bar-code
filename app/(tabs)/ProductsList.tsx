@@ -2,7 +2,6 @@ import { Link } from 'expo-router';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, FlatList, Image, ActivityIndicator, Pressable } from 'react-native';
 import type { RelativePathString } from 'expo-router';
-
 interface Product {
   id: number;
   name: string;
@@ -16,7 +15,8 @@ interface Product {
   editedBy: any[];
 }
 export default function ProductsList() {
-
+  
+  const appUrl = process.env.EXPO_PUBLIC_APP_URL
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -24,7 +24,7 @@ export default function ProductsList() {
   useEffect(() => {
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://192.168.9.33:3000/products');
+      const response = await fetch(`${appUrl}/products`);
       if (!response.ok) {
         throw new Error(`HTTP Error ${response.status}`);
       }

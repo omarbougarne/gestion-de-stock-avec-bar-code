@@ -3,7 +3,6 @@ import { StyleSheet, Button, TextInput, View, Text } from 'react-native';
 import { router } from 'expo-router';
 import { saveUserSession } from '../utils/storage';
 
-
 interface Warehouseman {
   id: string; 
   name: string;
@@ -14,12 +13,13 @@ interface Warehouseman {
 }
 
 export default function Login() {
+  const appUrl = process.env.EXPO_PUBLIC_APP_URL
   const [userId, setUserId] = useState('');
   const [error, setError] = useState('');
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://192.168.9.33:3000/warehousemans');
+      const response = await fetch(`${appUrl}/warehousemans`);
       if (!response.ok) {
         throw new Error(`HTTP error ${response.status}`);
       }

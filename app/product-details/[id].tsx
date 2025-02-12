@@ -18,6 +18,7 @@ editedBy: any[];
 
 
 export default function ProductDetails() {
+  const appUrl = process.env.EXPO_PUBLIC_APP_URL
   const { id } = useLocalSearchParams<{id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [error, setError] = useState('');
@@ -26,7 +27,7 @@ export default function ProductDetails() {
   const fetchProduct = async () => {
     try {
       console.log('Starting fetch for product id:', id);
-      const response = await fetch(`http://192.168.9.33:3000/products/${id}`);
+      const response = await fetch(`${appUrl}/products/${id}`);
       console.log('Response received:', response);
       if (!response.ok) {
         console.error('Response not OK, status:', response.status);
