@@ -32,7 +32,7 @@ export default function ProductsList() {
           throw new Error(`HTTP Error ${response.status}`);
         }
         const data = await response.json();
-        console.log('Fetched Data:', data);
+        // console.log('Fetched Data:', data);
         setProducts(data);
       } catch (err) {
         console.error('Fetch error:', err);
@@ -46,7 +46,9 @@ export default function ProductsList() {
   }, [appUrl]);
 
   const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+  product.type.toLowerCase().includes(searchQuery.toLowerCase()) || 
+  product.price.toString().includes(searchQuery.toLocaleLowerCase())
   );
 
   if (loading) {
