@@ -95,10 +95,22 @@ const handleIncreaseStock = () => {
       <Text style={styles.productStock}>
         Total Stock Quantity: {totalStockQuantity}
       </Text>
+      
+      {product && product.editedBy.length > 0 && (
+        <View style={styles.editedByContainer}>
+          <Text style={styles.editedByTitle}>Edited By:</Text>
+          {product.editedBy.map((editor, index) => (
+            <Text key={index} style={styles.editorText}>
+              {editor.warehousemanId} at {editor.at}
+            </Text>
+          ))}
+        </View>
+      )}
+
       <View style={styles.buttonRow}>
-            <Button title="Increase Stock" onPress={handleIncreaseStock} />
-            <Button title="Decrease Stock" onPress={handleDecreaseStock} />
-          </View>
+        <Button title="Increase Stock" onPress={handleIncreaseStock} />
+        <Button title="Decrease Stock" onPress={handleDecreaseStock} />
+      </View>
     </View>
   )
 }
@@ -142,6 +154,23 @@ const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+  },
+  editedByContainer: {
+    marginTop: 20,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    backgroundColor: '#f9f9f9',
+  },
+  editedByTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  editorText: {
+    fontSize: 14,
+    color: '#555',
   },
   errorText: {
     color: 'red',
