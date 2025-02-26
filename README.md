@@ -1,21 +1,31 @@
-## Table of Contents
+Welcome to the Stock management app using a bar code scanner this app was built using React Native & Expo Go 📱
 
-- [Features](#features)
-- [Installation](#installation)
-- [Running the App](#running-the-app)
-- [Testing](#testing)
-- [Environment Variables](#environment-variables)
-- [Usage](#usage)
-  - [Adding a Product](#adding-a-product)
-  - [Viewing Product Details](#viewing-product-details)
-  - [Stock Tracking](#stock-tracking)
-- [Code Overview](#code-overview)
-  - [Product Interface](#product-interface)
-  - [Fetching Products](#fetching-products)
-  - [Stock Tracker Component](#stock-tracker-component)
-  - [Barcode Scanner Component](#barcode-scanner-component)
-- [Contributing](#contributing)
-- [License](#license)
+# Stock Management App
+
+This is a native app for managing stock, featuring a barcode scanner for easy product management. The app allows users to add, edit, and track products in their inventory.
+
+## Features
+
+- **Product Management**: Add, edit, and delete products.
+- **Barcode Scanner**: Quickly scan barcodes to add or search for products.
+- **Stock Tracking**: Monitor stock levels and get alerts for low stock.
+- **Search and Filter**: Search products by name, type, supplier, and more. Filter products by price and quantity.
+
+## Project Structure
+
+A mix of structural and expo router
+
+
+## Installation
+
+To get started with the project, clone the repository and install the dependencies:
+```sh
+npx install
+
+```sh
+npx degit user/repo-name stock-management-app
+cd stock-management-app
+npx pnpm install
 
 ## Running the App
 
@@ -28,11 +38,6 @@ npx expo start --ios
 npx expo start --web
 
 
-## Testing
-
-Add instructions for running tests:
-
-```markdown
 ## Testing
 
 To run the tests, use the following command:
