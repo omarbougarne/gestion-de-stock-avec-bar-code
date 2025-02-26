@@ -48,8 +48,6 @@ npx jest --watchAll
 
 ## Environment Variables
 
-Add instructions for setting up environment variables:
-
 ```markdown
 ## Environment Variables
 
